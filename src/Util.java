@@ -20,37 +20,54 @@ public class Util {
         for (int i = 1; i < s1.length; i++) {
             String[] sItem = s1[i].split(",");
             String name = sItem[0];
-            System.out.println(name);
             boolean is_expense = Boolean.parseBoolean(sItem[1]);
-            System.out.println(is_expense);
             int quantity = Integer.parseInt(sItem[2]);
-            System.out.println(quantity);
             int sum_of_one = Integer.parseInt(sItem[3].substring(0, sItem[3].length() - 1));
-            System.out.println(sum_of_one);
             items.add(new Item(name, is_expense, quantity, sum_of_one));
         }
         return items;
     }
 
-    public static List<Month> getMonthList(String s){
+    public static List<Month> getMonthList(String s) {
         ArrayList<Month> items = new ArrayList<>();
         String[] s1 = s.split("\\n");
         for (int i = 1; i < s1.length; i++) {
             String[] sItem = s1[i].split(",");
             String mon = sItem[0];
-            System.out.println(mon);
             int amount = Integer.parseInt(sItem[1]);
-            System.out.println(amount);
             boolean is_expense = Boolean.parseBoolean(sItem[2].substring(0, sItem[2].length() - 1));
-            System.out.println(is_expense);
             items.add(new Month(mon, amount, is_expense));
         }
         return items;
     }
 
-    public static void checkReport(){
+    public static void checkReport(List<Item>items, String mon) {
+
+        String year =  Util.readFileContentsOrNull("C:/sprint1/resources/y.2021.csv");
+       List<Month> months = getMonthList(year);
+
+        int amount = 0;
+        int expense = 0;
+        for (Item item: items) {
+            if(item.is_expense){
+                expense = expense + item.sum_of_one * item.quantity;
+            }
+            else {
+                amount = amount + item.sum_of_one * item.quantity;
+            }
+        }
+        for(Month month: months){
+            if(month.mon.equals(mon) && month.is_expense){
+                if(month.amount != expense){
+                    System.out.println(mon);
+                }
+            }
+            if(month.mon.equals(mon) && !month.is_expense){
+                if(month.amount != amount){
+                    System.out.println(mon);
+                }
+            }
+        }
 
     }
-
-
 }

@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -27,6 +28,19 @@ public class Main {
             String year =  Util.readFileContentsOrNull("C:/sprint1/resources/y.2021.csv");
         }
         else if(command == 3){
+            String january =  Util.readFileContentsOrNull("C:/sprint1/resources/m.202101.csv");
+            List<Item> jan = Util.getItemsOfMonth(january);
+            Util.checkReport(jan, "01");
+
+            String february =  Util.readFileContentsOrNull("C:/sprint1/resources/m.202102.csv");
+            List<Item> feb = Util.getItemsOfMonth(february);
+            Util.checkReport(feb, "02");
+
+            String march =  Util.readFileContentsOrNull("C:/sprint1/resources/m.202103.csv");
+            List<Item> mar = Util.getItemsOfMonth(march);
+            Util.checkReport(mar, "03");
+
+            System.out.println("Проверка  прошла успешно");
 
         }
 
