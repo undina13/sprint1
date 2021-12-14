@@ -1,54 +1,69 @@
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Введите цифру команды");
-        System.out.println("1 - Считать все месячные отчёты");
-        System.out.println("2 - Считать годовой отчёт");
-        System.out.println("3 - Сверить отчёты");
-        System.out.println("4 - Вывести информацию о всех месячных отчётах");
-        System.out.println("5 - Вывести информацию о годовом отчёте");
-      //  System.out.println("Для выхода напишите exit");
+        while (true) {
+            System.out.println("Введите цифру команды");
+            System.out.println("1 - Считать все месячные отчёты");
+            System.out.println("2 - Считать годовой отчёт");
+            System.out.println("3 - Сверить отчёты");
+            System.out.println("4 - Вывести информацию о всех месячных отчётах");
+            System.out.println("5 - Вывести информацию о годовом отчёте");
 
 
-       Scanner scanner = new Scanner(System.in);
-        int command= scanner.nextInt();
+            Scanner scanner = new Scanner(System.in);
+            int command = scanner.nextInt();
 
-        if(command == 1){
-            String january =  Util.readFileContentsOrNull("C:/sprint1/resources/m.202101.csv");
-            String february =  Util.readFileContentsOrNull("C:/sprint1/resources/m.202102.csv");
-            String march =  Util.readFileContentsOrNull("C:/sprint1/resources/m.202103.csv");
+            if (command == 1) {
+                Map<String, List<Item>> map = Util.getItemsOfMonth();
+
+            } else if (command == 2) {
+                Map<String, MonNew> map = Util.checkYear();
+
+            } else if (command == 3) {
+                Util.checkReport();
+
+            } else if (command == 4) {
+                Map<String, List<Item>> map = Util.getItemsOfMonth();
+                for (Map.Entry<String, List<Item>> entry : map.entrySet()) {
+                    int num = Integer.parseInt(entry.getKey());
+                    System.out.println(NameOfMonth.values()[num - 1]);
+                    Util.infoAboutMonth(entry.getValue());
+                    System.out.println("");
+                    System.out.println("");
+                }
+
+            } else if (command == 5) {
+                System.out.println("Год 2021");
+                Map<String, MonNew> map = Util.checkYear();
+                int allAamount = 0;
+                int allExpence = 0;
+
+                for (Map.Entry<String, MonNew> entry : map.entrySet()) {
+                    System.out.println("Месяц: " + entry.getKey() + " Прибыль: " + (entry.getValue().amount - entry.getValue().expense));
+                    allAamount += entry.getValue().amount;
+                    allExpence += entry.getValue().expense;
+                }
+
+                System.out.println("Средний расход за все месяцы в году - " + allAamount / map.size());
+                System.out.println("Средний доход за все месяцы в году - " + allExpence / map.size());
+
+            }
+            else if(command==1000){
+                System.out.println("Выход из программы");
+                break;
+            }
+            else {
+                System.out.println("Нет такой команды. Попробуйте еще раз");
+            }
         }
-        else if(command == 2){
-            String year =  Util.readFileContentsOrNull("C:/sprint1/resources/y.2021.csv");
-        }
-        else if(command == 3){
-            String january =  Util.readFileContentsOrNull("C:/sprint1/resources/m.202101.csv");
-            List<Item> jan = Util.getItemsOfMonth(january);
-            Util.checkReport(jan, "01");
-
-            String february =  Util.readFileContentsOrNull("C:/sprint1/resources/m.202102.csv");
-            List<Item> feb = Util.getItemsOfMonth(february);
-            Util.checkReport(feb, "02");
-
-            String march =  Util.readFileContentsOrNull("C:/sprint1/resources/m.202103.csv");
-            List<Item> mar = Util.getItemsOfMonth(march);
-            Util.checkReport(mar, "03");
-
-            System.out.println("Проверка  прошла успешно");
-
-        }
-
-
-
     }
 
-
-
 }
+
+
+
 
